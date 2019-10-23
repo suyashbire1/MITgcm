@@ -72,6 +72,10 @@ C-    Time reccord loaded from file:
           SST1            (i,j,bi,bj) = 0. _d 0
           SSS0            (i,j,bi,bj) = 0. _d 0
           SSS1            (i,j,bi,bj) = 0. _d 0
+#ifdef ALLOW_GEOTHERMAL_FLUX
+          geothFlux0      (i,j,bi,bj) = 0. _d 0
+          geothFlux1      (i,j,bi,bj) = 0. _d 0
+#endif
 #ifdef SHORTWAVE_HEATING
           Qsw0            (i,j,bi,bj) = 0. _d 0
           Qsw1            (i,j,bi,bj) = 0. _d 0

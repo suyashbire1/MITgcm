@@ -178,6 +178,10 @@ C     [0,1]         :: End points for interpolation
      &                 taux0, tauy0, Qnet0, EmPmR0, SST0, SSS0,
      &                 taux1, tauy1, Qnet1, EmPmR1, SST1, SSS1,
      &                 saltFlux0, saltFlux1
+
+#ifdef ALLOW_GEOTHERMAL_FLUX
+     &               , geothFlux0, geothFlux1
+#endif
 #ifdef SHORTWAVE_HEATING
      &               , Qsw0, Qsw1
 #endif
@@ -185,27 +189,31 @@ C     [0,1]         :: End points for interpolation
      &               , pLoad0, pLoad1
 #endif
 
-      _RS  taux0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  tauy0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  Qnet0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  EmPmR0   (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  saltFlux0(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  SST0     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  SSS0     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  taux1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  tauy1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  Qnet1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  EmPmR1   (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  saltFlux1(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  SST1     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  SSS1     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  taux0        (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  tauy0        (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  Qnet0        (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  EmPmR0       (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  saltFlux0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  SST0         (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  SSS0         (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  taux1        (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  tauy1        (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  Qnet1        (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  EmPmR1       (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  saltFlux1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  SST1         (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  SSS1         (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+#ifdef ALLOW_GEOTHERMAL_FLUX
+      _RS  geothFlux0   (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  geothFlux1   (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+#endif
 #ifdef ATMOSPHERIC_LOADING
-      _RS  pLoad0   (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  pLoad1   (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  pLoad0       (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  pLoad1       (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 #endif
 #ifdef SHORTWAVE_HEATING
-      _RS  Qsw1     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-      _RS  Qsw0     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  Qsw1         (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  Qsw0         (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 #endif
 #endif /* EXCLUDE_FFIELDS_LOAD */
 

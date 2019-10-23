@@ -192,6 +192,14 @@ C-    Qnet is now (after c54) the net Heat Flux (including SW)
          ENDIF
         ENDIF
 #endif
+#ifdef ALLOW_GEOTHERMAL_FLUX
+        IF ( geothermalFluxFile .NE. ' '  ) THEN
+         CALL READ_REC_XY_RS( geothermalFluxFile, geothFlux0,
+     &                        intime0, myIter, myThid )
+         CALL READ_REC_XY_RS( geothermalFluxFile, geothFlux1,
+     &                        intime1, myIter, myThid )
+        ENDIF
+#endif
 #ifdef ATMOSPHERIC_LOADING
         IF ( pLoadFile .NE. ' '  ) THEN
          CALL READ_REC_XY_RS( pLoadFile, pLoad0,
@@ -217,6 +225,10 @@ C-    thread synchronisation (barrier) is part of the EXCH S/R calls
 #ifdef SHORTWAVE_HEATING
         _EXCH_XY_RS(Qsw0, myThid )
         _EXCH_XY_RS(Qsw1, myThid )
+#endif
+#ifdef ALLOW_GEOTHERMAL_FLUX
+        _EXCH_XY_RS(geothFlux0, myThid )
+        _EXCH_XY_RS(geothFlux1, myThid )
 #endif
 #ifdef ATMOSPHERIC_LOADING
         _EXCH_XY_RS(pLoad0, myThid )
@@ -299,6 +311,16 @@ C--   Interpolate fu,fv,Qnet,EmPmR,SST,SSS,Qsw
            DO i=1-OLx,sNx+OLx
             Qsw(i,j,bi,bj)   = bWght*Qsw0(i,j,bi,bj)
      &                       + aWght*Qsw1(i,j,bi,bj)
+           ENDDO
+          ENDDO
+        ENDIF
+#endif
+#ifdef ALLOW_GEOTHERMAL_FLUX
+        IF ( geothermalFluxFile .NE. ' '  ) THEN
+          DO j=1-OLy,sNy+OLy
+           DO i=1-OLx,sNx+OLx
+            geothermalFlux(i,j,bi,bj) = bWght*geothFlux0(i,j,bi,bj)
+     &                                + aWght*geothFlux1(i,j,bi,bj)
            ENDDO
           ENDDO
         ENDIF
